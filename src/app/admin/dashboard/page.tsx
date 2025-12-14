@@ -1,8 +1,8 @@
 
-import { PrismaClient } from '@prisma/client';
+
 import { Users, DollarSign, BookOpen } from 'lucide-react';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/db';
 
 async function getStats() {
     const totalStudents = await prisma.student.count();

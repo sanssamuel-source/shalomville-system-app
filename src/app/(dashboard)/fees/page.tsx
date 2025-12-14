@@ -1,11 +1,11 @@
 
-import { PrismaClient } from '@prisma/client';
+
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { CheckCircle, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/db';
 
 async function getFees() {
   const cookieStore = await cookies();
@@ -13,6 +13,9 @@ async function getFees() {
   if (!token) return [];
   
   const user = jwt.decode(token) as any;
+  if (!user || (user as any).role !== 'PARENT') {
+    return [];
+  }
   const parentData = await prisma.parent.findUnique({
     where: { userId: user.userId },
     include: {

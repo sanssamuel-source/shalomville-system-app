@@ -1,7 +1,7 @@
 
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+
+import prisma from '@/lib/db';
 
 async function getAnnouncements() {
   return await prisma.announcement.findMany({

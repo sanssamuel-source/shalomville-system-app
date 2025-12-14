@@ -1,11 +1,11 @@
 
-import { PrismaClient } from '@prisma/client';
+
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { CreditCard, Bell, Calendar, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/db';
 
 async function getData() {
   const cookieStore = await cookies();
@@ -13,7 +13,7 @@ async function getData() {
   if (!token) return null;
   
   const user = jwt.decode(token) as any;
-  if (!user) return null;
+  if (!user || (user as any).role !== 'PARENT') return null;
 
   // Fetch Parent Data including Student and Fees
   // Note: For simplicity assuming 1 student for now

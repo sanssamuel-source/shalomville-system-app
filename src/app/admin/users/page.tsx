@@ -1,8 +1,8 @@
 
-import { PrismaClient } from '@prisma/client';
-import { Mail, Phone, User as UserIcon } from 'lucide-react';
 
-const prisma = new PrismaClient();
+import { Mail, Phone } from 'lucide-react';
+
+import prisma from '@/lib/db';
 
 async function getUsers() {
     return await prisma.user.findMany({
