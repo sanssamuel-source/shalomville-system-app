@@ -1,8 +1,8 @@
 
 import { NextResponse } from 'next/server';
 
-import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 
 import prisma from '@/lib/db';
@@ -58,7 +58,8 @@ export async function POST(req: Request) {
 
     return response;
   } catch (error) {
-    console.error('Login error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Login error full details:', error);
+    // @ts-ignore
+    return NextResponse.json({ error: 'Internal server error', details: error.message }, { status: 500 });
   }
 }

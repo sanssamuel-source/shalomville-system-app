@@ -8,7 +8,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/60 z-10"></div>
-        <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-photo/happy-black-students-walking-school-corridor-talking_1262-12349.jpg')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-[url('https://shalomvilleschoolsinternational.org/advert/edusolutions_1747945894a8e9a94a8ec91d3cb3f941376ab283dd.jpg')] bg-cover bg-center"></div>
         
         <div className="container mx-auto px-4 relative z-20 max-w-4xl">
             <span className="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase mb-6 inline-block animate-in fade-in slide-in-from-bottom-4 duration-700">
