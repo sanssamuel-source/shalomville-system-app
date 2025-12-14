@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("PARENT") // PARENT, ADMIN, TEACHER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  parentProfile Parent?
+  teacherProfile Teacher?
+  announcements Announcement[]
+}
+
+model Parent {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  phone  String?
+  address String?
+  
+  students Student[]
+}
+
+model Teacher {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  subjects String // Comma separated for simplicity or JSON
+  classes  Class[]
+}
+
+model Class {
+  id        String @id @default(uuid())
+  name      String
+  grade     String
+  teacherId String?
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  
+  students  Student[]
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  dateOfBirth DateTime?
+  gender    String?
+  
+  classId   String?
+  class     Class?   @relation(fields: [classId], references: [id])
+  
+  parentId  String
+  parent    Parent   @relation(fields: [parentId], references: [id])
+  
+  attendance Attendance[]
+  fees       Fee[]
+  results    Result[]
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  date      DateTime @default(now())
+  status    String   // PRESENT, ABSENT, LATE
+  remarks   String?
+}
+
+model Fee {
+  id          String   @id @default(uuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id])
+  amount      Float
+  description String
+  status      String   // PAID, UNPAID, PARTIAL
+  dueDate     DateTime
+  paidDate    DateTime?
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  subject   String
+  score     Float
+  grade     String
+  term      String
+  year      String
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  category  String   // ACADEMIC, EVENTS, GENERAL
+  date      DateTime @default(now())
+  
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+}
